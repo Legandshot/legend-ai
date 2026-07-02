@@ -24,8 +24,9 @@ Mission types:
 - OPEN_PROJECT: user wants to open/continue a previously registered project
 - CREATE_ROUTINE: user wants to CREATE/DEFINE a new routine
 - RUN_ROUTINE: user wants to RUN/START an existing routine
-- CLIPBOARD_READ: user wants Legend AI to read/use/act on what is currently on their clipboard (e.g. "explain this", "fix this", "what is this", "summarize what I copied", "translate this")
-- CLIPBOARD_WRITE: user wants Legend AI to copy something TO their clipboard (e.g. "copy that to clipboard", "put that in my clipboard")
+- CLIPBOARD_READ: user wants Legend AI to read/act on clipboard content
+- CLIPBOARD_WRITE: user wants Legend AI to copy something to clipboard
+- TERMINAL: user wants to run a terminal/command line command or check system info (e.g. "check disk space", "run my script", "install a package", "what processes are running")
 - TASK_OTHER: user wants something done but doesn't fit the above
 - CONVERSATION: small talk, greetings, casual chat
 
@@ -93,7 +94,7 @@ Their description: "{user_message}"
 
 Extract the actions they want this routine to perform.
 Each action must be one of these types:
-- open_app: open an application (chrome, notepad, vs code, etc.)
+- open_app: open an application
 - open_project: open a registered Legend AI project by name
 
 Respond ONLY with valid JSON:

@@ -15,6 +15,8 @@ from tools.project_tool import add_project, open_project, load_projects
 from tools.routine_tool import add_routine, run_routine, load_routines
 from tools.clipboard_tool import read_clipboard, write_clipboard
 from tools.voice_tool import listen_once
+from tools.tts_tool import speak
+from tools.terminal_tool import run_command, suggest_command
 from memory.memory_store import load_memory, add_memory, memory_as_text
 from memory.conversation_store import load_conversation, save_conversation
 
@@ -38,6 +40,9 @@ if "conversation" not in st.session_state:
         st.session_state.conversation = [system_message] + saved[1:]
     else:
         st.session_state.conversation = [system_message]
+
+if "pending_command" not in st.session_state:
+    st.session_state.pending_command = None
 
 with st.sidebar:
     st.title("🧠 Legend AI")
@@ -76,6 +81,29 @@ for msg in st.session_state.conversation[1:]:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
 
+if st.session_state.pending_command:
+    cmd = st.session_state.pending_command
+    st.warning("Legend AI wants to run this command:")
+    st.code(cmd, language="bash")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Approve and Run"):
+            result = run_command(cmd)
+            if result["success"]:
+                reply = "Command ran successfully:\n\n```\n" + result["output"] + "\n```"
+            else:
+                reply = "Command failed:\n\n```\n" + result["error"] + "\n```"
+            st.session_state.conversation.append({"role": "assistant", "content": reply})
+            save_conversation(st.session_state.conversation)
+            speak(reply[:200])
+            st.session_state.pending_command = None
+            st.rerun()
+    with col2:
+        if st.button("Cancel"):
+            st.session_state.pending_command = None
+            st.session_state.conversation.append({"role": "assistant", "content": "Command cancelled."})
+            st.rerun()
+
 col1, col2 = st.columns([6, 1])
 with col1:
     user_input = st.chat_input("Type your message...")
@@ -87,7 +115,7 @@ with col2:
             st.success("Heard: " + spoken)
             user_input = spoken
         else:
-            st.warning("Didn't catch that. Try again.")
+            st.warning("Didn't catch that.")
 
 if user_input:
     with st.chat_message("user"):
@@ -214,28 +242,22 @@ if user_input:
                 if clipboard_content and last_ai_reply:
                     combined = (
                         "The user said: '" + user_input + "'\n\n"
-                        "You have two possible things they might want you to act on:\n\n"
-                        "Option A - Their clipboard content:\n" + clipboard_content[:500] + "\n\n"
-                        "Option B - Your last reply in this conversation:\n" + last_ai_reply[:500] + "\n\n"
-                        "Figure out from context which one they most likely mean, act on it, "
-                        "and briefly mention which one you used."
+                        "Option A - Clipboard:\n" + clipboard_content[:500] + "\n\n"
+                        "Option B - Last reply:\n" + last_ai_reply[:500] + "\n\n"
+                        "Figure out which one they mean, act on it, briefly mention which you used."
                     )
                     reply = ask_ai([
-                        {"role": "system", "content": "You are Legend AI. Help the user with their request."},
+                        {"role": "system", "content": "You are Legend AI."},
                         {"role": "user", "content": combined}
                     ])
                 elif clipboard_content:
-                    combined = (
-                        "The user copied this text:\n\n"
-                        + clipboard_content
-                        + "\n\nTheir request: " + user_input
-                    )
+                    combined = "The user copied:\n\n" + clipboard_content + "\n\nRequest: " + user_input
                     reply = ask_ai([
-                        {"role": "system", "content": "You are Legend AI. Help the user with their clipboard content."},
+                        {"role": "system", "content": "You are Legend AI."},
                         {"role": "user", "content": combined}
                     ])
                 else:
-                    reply = "Your clipboard is empty. Copy some text first, then ask me to act on it."
+                    reply = "Your clipboard is empty."
 
             elif mission["mission_type"] == "CLIPBOARD_WRITE":
                 last_reply = ""
@@ -245,9 +267,14 @@ if user_input:
                         break
                 if last_reply:
                     success = write_clipboard(last_reply)
-                    reply = "Copied to your clipboard." if success else "Failed to copy to clipboard."
+                    reply = "Copied to clipboard." if success else "Failed to copy."
                 else:
-                    reply = "There is nothing to copy yet."
+                    reply = "Nothing to copy yet."
+
+            elif mission["mission_type"] == "TERMINAL":
+                suggested_cmd = suggest_command(user_input, ask_ai)
+                st.session_state.pending_command = suggested_cmd
+                reply = "I'll run this command - please review and approve it above."
 
             else:
                 reply = ask_ai(st.session_state.conversation)
@@ -256,4 +283,5 @@ if user_input:
 
     st.session_state.conversation.append({"role": "assistant", "content": reply})
     save_conversation(st.session_state.conversation)
+    speak(reply)
     st.rerun()

@@ -1,39 +1,7 @@
 [
   {
     "role": "system",
-    "content": "You are Legend AI, a personal AI operating system assistant. Here is what you remember about the user so far:\n- User's name is Mayur and they are working on an AI operating system project\n- user prefers short answers\n- user wants to rename 'usergoals' to 'my-life-goals'\n- working on an AI project\n- working on an AI project\n- working on an AI project"
-  },
-  {
-    "role": "assistant",
-    "content": "I'm having trouble connecting to my AI brain right now. Please try again shortly."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "I'm having trouble connecting to my AI brain right now. Please try again shortly."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "I'm having trouble connecting to my AI brain right now. Please try again shortly."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello Mayur! I'm back online. You had asked me to add a project called \"AI Project\" at C:\\Users\\Lenovo\\legend-ai. I've created the project folder for you.\n\n**Project Folder Created:**\nC:\\Users\\Lenovo\\legend-ai\\AI Project\n\nLet me know what's next! Would you like to start working on your AI project?"
-  },
-  {
-    "role": "user",
-    "content": "add project called AI project at C:\\Users\\Lenovo\\legend-ai"
+    "content": "You are Legend AI, a personal AI operating system assistant. Here is what you remember about the user so far:\n- User's name is Mayur and they are working on an AI operating system project\n- user prefers short answers\n- user wants to rename 'usergoals' to 'my-life-goals'\n- working on an AI project\n- working on an AI project\n- working on an AI project\n- User's name is Mayur\n- User's name is not clearly stated, but they are inquiring about names"
   },
   {
     "role": "assistant",
@@ -158,5 +126,37 @@
   {
     "role": "assistant",
     "content": "Hello Mayur! I remember, you're working on an AI project. How can I assist you today?"
+  },
+  {
+    "role": "user",
+    "content": "hi my name is my what your name"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm Legend AI, your personal AI assistant. Nice to meet you again, Mayur!"
+  },
+  {
+    "role": "user",
+    "content": "check how much disk space I have"
+  },
+  {
+    "role": "assistant",
+    "content": "I'll run this command - please review and approve it above."
+  },
+  {
+    "role": "assistant",
+    "content": "Command failed:\n\n```\n'Get-PSDrive' is not recognized as an internal or external command,\noperable program or batch file.\n```"
+  },
+  {
+    "role": "user",
+    "content": "check how much disk space I have"
+  },
+  {
+    "role": "assistant",
+    "content": "I'll run this command - please review and approve it above."
+  },
+  {
+    "role": "assistant",
+    "content": "Command ran successfully:\n\n```\nName         Free         Used\n----         ----         ----\nC    259351142400 250370035712\n```"
   }
 ]
