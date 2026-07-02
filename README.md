@@ -82,4 +82,4 @@ legend-ai/
 
 Mayur ([@Legandshot](https://github.com/Legandshot))
 
-Built from scratch in one day with zero prior coding experience.
+
