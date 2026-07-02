@@ -1,0 +1,14 @@
+{
+  "morning": {
+    "actions": [
+      {
+        "type": "open_app",
+        "value": "chrome"
+      },
+      {
+        "type": "open_project",
+        "value": "ai project"
+      }
+    ]
+  }
+}
