@@ -1,0 +1,10 @@
+streamlit
+python-dotenv
+groq
+google-genai
+tavily-python
+pyperclip
+SpeechRecognition
+sounddevice
+scipy
+pyttsx3

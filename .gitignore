@@ -1,4 +1,10 @@
-venv/
 .env
+*.env
 __pycache__/
-*.pyc
+venv/
+.venv/
+conversation.json
+memory.json
+projects.json
+routines.json
+legend_files/
